@@ -1,7 +1,8 @@
 
 package co.edu.unicauca.mycompany.projects.presentation;
 
-import co.edu.unicauca.mycompany.projects.domain.entities.Sector;
+import co.edu.unicauca.mycompany.projects.domain.entities.*;
+import co.edu.unicauca.mycompany.projects.domain.services.CompanyService;
 import co.edu.unicauca.mycompany.projects.infra.Messages;
 import javax.swing.JFrame;
 
@@ -10,15 +11,18 @@ import javax.swing.JFrame;
  * @author Libardo, Julio
  */
 public class GUINewCompany extends javax.swing.JDialog {
+    
+    private CompanyService companyService;
 
     /**
      * Creates new form GUINewCompany
      * @param parent
+     * @param service
      */
-    public GUINewCompany(JFrame parent) {
+    public GUINewCompany(JFrame parent, CompanyService service) {
         super(parent, "Nueva Empresa", true); //true: modal
         
-        
+        this.companyService = service;
         initComponents();
         setSize(600,500);
         setLocationRelativeTo(parent);
@@ -31,6 +35,18 @@ public class GUINewCompany extends javax.swing.JDialog {
             cboSector.addItem(sector.toString());
         }
     }
+    
+    
+    private boolean checkPass(String pass){
+        if(!pass.matches(".{6,}")) return false;
+        else if(!pass.matches(".*[A-Z]+.*")) return false;
+        else if(!pass.matches(".*[a-z]+.*")) return false;
+        else if(!pass.matches(".*[0-9]+.*")) return false;
+        else if(!pass.matches(".*[\\*\\+\\-\\_\\.\\:\\,\\;\\¿\\?\\!\\¡\\#\\$\\%\\&\\/\\=\\@\\<\\>]+.*")) return false;
+        
+        return true;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,17 +68,18 @@ public class GUINewCompany extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         txtPhone = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtWebPage = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         cboSector = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -107,7 +124,7 @@ public class GUINewCompany extends javax.swing.JDialog {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Página web:");
         pnlCenter.add(jLabel5);
-        pnlCenter.add(jTextField4);
+        pnlCenter.add(txtWebPage);
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("*Sector industrial:");
@@ -119,7 +136,7 @@ public class GUINewCompany extends javax.swing.JDialog {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("*Email:");
         pnlCenter.add(jLabel7);
-        pnlCenter.add(jTextField6);
+        pnlCenter.add(txtEmail);
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("*Password:");
@@ -146,6 +163,45 @@ public class GUINewCompany extends javax.swing.JDialog {
             txtNit.requestFocus();
             return;
         }
+        
+        String nombre = txtName.getText().trim();
+        if (nombre.equals("")){
+            Messages.showMessageDialog("Debe agregar el Nombre", "Atención");
+            txtName.requestFocus();
+            return;
+        }
+        
+        String telefono = txtPhone.getText().trim();
+        String pagina = txtWebPage.getText().trim();
+        Sector sector = Sector.values()[cboSector.getSelectedIndex()];
+        
+        String email = txtEmail.getText().trim();
+        if (email.equals("")){
+            Messages.showMessageDialog("Debe agregar el Email", "Atención");
+            txtEmail.requestFocus();
+            return;
+        } else if(!email.matches(".+[@]{1}.+[.]{1}.+")){
+            Messages.showMessageDialog("Email invalido", "Atencion");
+            txtEmail.requestFocus();
+            return;
+        }
+        
+        String pass = txtPassword.getText().trim();
+        if (pass.equals("")){
+            Messages.showMessageDialog("Debe agregar la Contraseña", "Atención");
+            txtPassword.requestFocus();
+            return;
+        } else if(!checkPass(pass)){
+            Messages.showMessageDialog("Contraseña invalida", "Atención");
+            txtPassword.requestFocus();
+            return;
+        }
+        
+        companyService.saveCompany(new Company(nit, nombre, telefono, pagina, sector, email, pass));
+        
+        Messages.showMessageDialog("Compañia registrada exitosamente", "Atencion");
+        
+        this.dispose();
     }//GEN-LAST:event_btnSaveActionPerformed
 
 
@@ -164,13 +220,13 @@ public class GUINewCompany extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlSouth;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtNit;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtWebPage;
     // End of variables declaration//GEN-END:variables
 }
