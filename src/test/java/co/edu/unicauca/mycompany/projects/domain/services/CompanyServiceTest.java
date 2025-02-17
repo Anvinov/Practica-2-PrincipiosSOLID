@@ -43,7 +43,7 @@ public class CompanyServiceTest {
 
         );
 
-                
+        
         when(repositoryMock.listAll()).thenReturn(companies);
 
         // Llamado al método
@@ -61,7 +61,7 @@ public class CompanyServiceTest {
 
     @Test
     void testSaveCompany_Success() {
-        Company newCompany = new Company("123459", "Empresa D","3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
+        Company newCompany = new Company("123459", "Empresa D", "3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
 
         when(repositoryMock.save(newCompany)).thenReturn(true); // Simula éxito
 
@@ -73,7 +73,7 @@ public class CompanyServiceTest {
 
     @Test
     void testSaveCompany_Failure() {
-        Company newCompany = new Company("123459", "Empresa D","3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
+        Company newCompany = new Company("123459", "Empresa D", "3434345", "www.mipagina4.com", Sector.SERVICES, "gerente4@gmail.com", "123");
 
         when(repositoryMock.save(newCompany)).thenReturn(false); // Simula fallo
 

@@ -1,7 +1,7 @@
 package co.edu.unicauca.mycompany.projects.presentation;
 
 import co.edu.unicauca.mycompany.projects.domain.entities.Company;
-import co.edu.unicauca.mycompany.projects.domain.services.CompanyService;
+import co.edu.unicauca.mycompany.projects.domain.services.ICompanyService;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
@@ -15,12 +15,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GUIMenu extends javax.swing.JFrame {
 
-    private CompanyService companyService;
+    private ICompanyService companyService;
 
     /**
      * Creates new form GUIMenu
      */
-    public GUIMenu(CompanyService service) {
+    public GUIMenu(ICompanyService service) {
         this.companyService = service;
         initComponents();
         alignButtons();

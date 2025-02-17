@@ -2,7 +2,7 @@
 package co.edu.unicauca.mycompany.projects.presentation;
 
 import co.edu.unicauca.mycompany.projects.domain.entities.*;
-import co.edu.unicauca.mycompany.projects.domain.services.CompanyService;
+import co.edu.unicauca.mycompany.projects.domain.services.ICompanyService;
 import co.edu.unicauca.mycompany.projects.infra.Messages;
 import javax.swing.JFrame;
 
@@ -12,14 +12,14 @@ import javax.swing.JFrame;
  */
 public class GUINewCompany extends javax.swing.JDialog {
     
-    private CompanyService companyService;
+    private ICompanyService companyService;
 
     /**
      * Creates new form GUINewCompany
      * @param parent
      * @param service
      */
-    public GUINewCompany(JFrame parent, CompanyService service) {
+    public GUINewCompany(JFrame parent, ICompanyService service) {
         super(parent, "Nueva Empresa", true); //true: modal
         
         this.companyService = service;
